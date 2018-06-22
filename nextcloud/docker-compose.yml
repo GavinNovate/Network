@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    volumes:
+      - /docker/nextcloud/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=LBonnfzsof
+      - MYSQL_PASSWORD=LBonnfzsof
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  app:
+    image: nextcloud
+    ports:
+      - 8002:80
+    links:
+      - db
+    volumes:
+      - /docker/nextcloud/app:/var/www/html
+    restart: always
