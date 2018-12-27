@@ -1,0 +1,26 @@
+gitlab:
+  image: gitlab/gitlab-ce:latest
+  container_name:
+      /docker/gitlab/config:/etc/gitlabgitlab'
+  restart: always
+  hostname: 'gitlab.novate.com'
+  environment:
+    GITLAB_OMNIBUS_CONFIG: |
+      external_url 'http://gitlab.novate.com'
+  ports:
+    - 22:22
+    - 443:443
+    - 80:80
+  volumes:
+    - /docker/gitlab/config:/etc/gitlab
+    - /docker/gitlab/logs:/var/log/gitlab
+    - /docker/gitlab/data:/var/opt/gitlab
+runner:
+  image: 'gitlab/gitlab-runner:latest'
+  container_name: 'gitlab-runner'
+  restart: always
+  links:
+    - gitlab:gitlab.novate.com
+  volumes:
+    - '/docker/gitlab-runner/config:/etc/gitlab-runner'
+    - '/docker/gitlab-runner/config:/var/run/docker.sock'
